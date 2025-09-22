@@ -155,45 +155,43 @@ GROUP BY CUSTOMERNAME;
 | Anna's Decorations, Ltd     | 153996        | 4         | 83     |
 | Atelier graphique           | 24180         | 3         | 187    |
 | Australian Collectables, Ltd| 64591         | 3         | 22     |
-| ........................  | .......       | ....        | ...    |
+| ............................  | ........       | .....        | ....    |
 
 
-**This SQL code creates a view named RFM_SEGMENT, which calculates the RFM (Recency, Frequency, Monetary) scores and combines them into a single RFM category combination for each customer.**
+**The SQL script creates a view named RFM_SEGMENTATION that systematically computes the Recency, Frequency, and Monetary (RFM) scores for each customer and integrates them into a unified RFM category, enabling segmentation and analytical insights.**
+
 ```sql
-CREATE VIEW RFM_SEGMENT AS 
-WITH RFM_INITIAL_CALC AS (
-   SELECT
-    CUSTOMERNAME,
-    ROUND(SUM(SALES),0) AS MonetaryValue,
-    COUNT(DISTINCT ORDERNUMBER) AS Frequency,
-    -- MAX(STR_TO_DATE(ORDERDATE,' %d/%m/%y')) AS EACH_CUSTOMERS_LAST_TRANSACTION_DATE,
-    -- (SELECT MAX(STR_TO_DATE(ORDERDATE, '%d/%m/%y')) FROM SALES_SAMPLE_DATA) AS BUSINESS_LAST_TRANSACTION_DATE,
-    DATEDIFF(MAX(STR_TO_DATE(ORDERDATE, '%d/%m/%y')), (SELECT MAX(STR_TO_DATE(ORDERDATE, '%d/%m/%y')) FROM SALES_SAMPLE_DATA)) * (-1) AS Recency
-FROM SALES_SAMPLE_DATA
-GROUP BY CUSTOMERNAME
-),
-RFM_SCORE_CALC AS (
-    SELECT 
-        C.*,
-        NTILE(4) OVER (ORDER BY C.Recency DESC) AS RFM_RECENCY_SCORE,
-        NTILE(4) OVER (ORDER BY C.Frequency ASC) AS RFM_FREQUENCY_SCORE,
-        NTILE(4) OVER (ORDER BY C.MonetaryValue ASC) AS RFM_MONETARY_SCORE
-    FROM 
-        RFM_INITIAL_CALC AS C
-)
+CREATE VIEW RFM_SEGMENTATION AS
+WITH CLV AS  
+(SELECT
+	CUSTOMERNAME,
+	MAX(STR_TO_DATE(ORDERDATE, '%d/%m/%y')) AS CUSTOMER_LAST_TRANSACTION_DATE,
+    DATEDIFF((SELECT MAX(STR_TO_DATE(ORDERDATE, '%d/%m/%y')) FROM SAMPLE_SALES_DATA),
+	SUM(QUANTITYORDERED) AS TOTAL_QTY_ORDERED, 
+    MAX(STR_TO_DATE(ORDERDATE, '%d/%m/%y'))) AS RECENCY_VALUE,
+    COUNT(DISTINCT ORDERNUMBER) AS FREQUENCY_VALUE,
+    ROUND(SUM(SALES),0) AS MONETARY_VALUE
+FROM SAMPLE_SALES_DATA
+GROUP BY CUSTOMERNAME),
+
+RFM_SCORE AS (
+    (SELECT 
+	C.*,
+    NTILE(5) OVER(ORDER BY RECENCY_VALUE DESC) AS R_SCORE,
+    NTILE(5) OVER(ORDER BY FREQUENCY_VALUE ASC) AS F_SCORE,
+    NTILE(5) OVER(ORDER BY MONETARY_VALUE ASC) AS M_SCORE
+FROM CLV AS C),
+
 SELECT
     R.CUSTOMERNAME,
     (R.RFM_RECENCY_SCORE + R.RFM_FREQUENCY_SCORE + R.RFM_MONETARY_SCORE) AS TOTAL_RFM_SCORE,
-    CONCAT_WS(
-		'', R.RFM_RECENCY_SCORE, R.RFM_FREQUENCY_SCORE, R.R.RFM_MONETARY_SCORE
-    ) AS RFM_CATEGORY_COMBINATION
-FROM 
-    RFM_SCORE_CALC AS R; 
+    CONCAT_WS('', R.RFM_RECENCY_SCORE, R.RFM_FREQUENCY_SCORE, R.R.RFM_MONETARY_SCORE) AS RFM_COMBINATION
+FROM RFM_SCORE AS R; 
 
-SELECT * FROM RFM_SEGMENT;
+SELECT * FROM RFM_SEGMENTATION;
 ```
--- OUTPUT --
-| CUSTOMERNAME            | TOTAL_RFM_SCORE | RFM_CATEGORY_COMBINATION |
+**OUTPUT**
+| CUSTOMERNAME            | TOTAL_RFM_SCORE | RFM_COMBINATION |
 |-------------------------|-----------------|--------------------------|
 | Boards & Toys Co.       | 6               | 321                      |
 | Atelier graphique       | 5               | 221                      |
@@ -201,12 +199,10 @@ SELECT * FROM RFM_SEGMENT;
 | .....         | ...               | ...                      |
 
 ```sql
-SELECT DISTINCT RFM_CATEGORY_COMBINATION 
-    FROM RFM_SEGMENT
-ORDER BY 1;
+SELECT DISTINCT(RFM_COMBINATION) FROM RFM_SEGMENT ORDER BY 1;
 ```
--- OUTPUT --
-| RFM_CATEGORY_COMBINATION |
+**OUTPUT**
+| RFM_COMBINATION |
 |--------------------------|
 | 111                      |
 | 112                      |
@@ -232,7 +228,7 @@ SELECT
 
 FROM RFM_SEGMENT;
 ```
--- OUTPUT --
+**OUTPUT**
 | CUSTOMERNAME            | CUSTOMER_SEGMENT   |
 |-------------------------|---------------------|
 | Boards & Toys Co.       | ACTIVE              |
@@ -253,17 +249,17 @@ WITH CTE1 AS
         WHEN RFM_CATEGORY_COMBINATION IN (323, 333,321, 341, 422, 332, 432) THEN 'ACTIVE'
         WHEN RFM_CATEGORY_COMBINATION IN (433, 434, 443, 444) THEN 'LOYAL'
     ELSE 'CANNOT BE DEFINED'
-    END AS CUSTOMER_SEGMENT
+    END AS CUSTOMER_SEGMENTS
 FROM RFM_SEGMENT)
 
 SELECT 
-    CUSTOMER_SEGMENT, count(*) as Number_of_Customers
+    CUSTOMER_SEGMENTS, count(*) as TOTAL_CUSTOMERS
 FROM CTE1
 GROUP BY 1
 ORDER BY 2 DESC;
 ```
 -- OUTPUT --
-| CUSTOMER_SEGMENT          | Number_of_Customers |
+| CUSTOMER_SEGMENTS         | TOTAL_CUSTOMERS |
 |---------------------------|---------------------|
 | CHURNED CUSTOMER          | 20                  |
 | ACTIVE                    | 18                  |
@@ -272,9 +268,3 @@ ORDER BY 2 DESC;
 | POTENTIAL CHURNERS        | 13                  |
 | SLIPPING AWAY, CANNOT LOSE| 8                   |
 | NEW CUSTOMERS             | 4                   |
-
-
-
-
-- Calculate recency, frequency, and monetary scores for each customer.
-- Segment customers into categories based on RFM scores.
