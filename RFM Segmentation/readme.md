@@ -51,24 +51,10 @@ SELECT COUNT(*) AS TOTAL_VALUES FROM SALES_SAMPLE_DATA;
 | 2823     |
 
 ## Checking Unique VALUES
-```sql
-Unique Sales Status
-```
-```sql
-select distinct status from AS SALES_STATUS SALES_SAMPLE_DATA;
-```
-**OUTPUT**
-| SALES_STATUS     |
-|------------|
-| Shipped    |
-| Disputed   |
-| In Process |
-| Cancelled  |
-| On Hold    |
-| Resolved   |
 
+**DISTINCT Years**
 ```sql
-select distinct year_id from SALES_SAMPLE_DATA;
+SELECT DISTINCT(YEAR_ID) FROM SALES_SAMPLE_DATA;
 ```
 -- OUTPUT --
 | year_id |
@@ -77,8 +63,9 @@ select distinct year_id from SALES_SAMPLE_DATA;
 | 2004    |
 | 2005    |
 
+**DISTINCT Product Lines**
 ```sql
-select distinct PRODUCTLINE from SALES_SAMPLE_DATA;
+SELECT DISTINCT(PRODUCTLINE) FROM SALES_SAMPLE_DATA;
 ```
 -- OUTPUT --
 | PRODUCTLINE      |
@@ -91,8 +78,23 @@ select distinct PRODUCTLINE from SALES_SAMPLE_DATA;
 | Ships            |
 | Trains           |
 
+**DISTINCT Sales Status**
 ```sql
-select distinct COUNTRY from SALES_SAMPLE_DATA;
+SELECT DISTINCT(status) AS SALES_STATUS FROM SALES_SAMPLE_DATA;
+```
+**OUTPUT**
+| SALES_STATUS     |
+|------------|
+| Shipped    |
+| Disputed   |
+| In Process |
+| Cancelled  |
+| On Hold    |
+| Resolved   |
+
+**DISTINCT Countries**
+```sql
+SELECT DISTINCT(COUNTRY) FROM SALES_SAMPLE_DATA;
 ```
 -- OUTPUT --
 | COUNTRY     |
@@ -117,18 +119,9 @@ select distinct COUNTRY from SALES_SAMPLE_DATA;
 | Switzerland |
 | Ireland     |
 
+**DISTINCT Territories**
 ```sql
-select distinct DEALSIZE from SALES_SAMPLE_DATA;
-```
--- OUTPUT --
-| DEALSIZE |
-|----------|
-| Small    |
-| Medium   |
-| Large    |
-
-```sql
-select distinct TERRITORY from SALES_SAMPLE_DATA;
+SELECT DISTINCT(TERRITORY) from SALES_SAMPLE_DATA;
 ```
 -- OUTPUT --
 | TERRITORY |
