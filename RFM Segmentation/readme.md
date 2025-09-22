@@ -1,11 +1,16 @@
 
 # RFM Segmentation
 
-RFM (Recency, Frequency, Monetary) segmentation is a method used by businesses to categorize customers based on their transactional behavior. This segmentation approach helps in understanding customer value and behavior, enabling targeted marketing and customer relationship management strategies.
+RFM Segmentation is a powerful customer segmentation technique used in businesses, marketing and customer analytics. It helps in categorizing different customer groups based on their purchasing behavior.
 
-## Why we should go through in this process
+**RFM stands for:**
+Recency (R): How recently a customer made purchase. A lower number indicates a more recent purchase.
+Frequency (F): How often a customer make a purchase. A higher number inddicates a customer purchases frequently. 
+Monetary Value (M): How much money a customer spends on purchases. It indicates how much financial value a customer brings to a business.
 
-RFM segmentation involves calculating recency, frequency, and monetary scores for each customer and then categorizing them into segments based on these scores. The provided SQL script segments customers into different categories, such as 'Churned Customer', 'Slipping Away, Cannot Lose', 'New Customers', 'Potential Churners', 'Active', and 'Loyal'.
+## Why we should use RFM Segmentation?
+
+RFM segmentation helps businesses in personalize marketing efforts, improve customer retention, identify churn risks, and so on based the calculation of Recency, Frequency, and Monetary scores. The provided SQL script calculates these three factors for each customers and segments them into distinct behavioral categories, including 'Champions', 'Loyal Customers', 'Potential Loyalists', 'Promising Customers', 'Needs Attention', 'About to Sleep', and 'Other'.
 
 
 ## Database Setup
