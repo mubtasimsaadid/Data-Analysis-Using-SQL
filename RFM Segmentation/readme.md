@@ -52,22 +52,22 @@ SELECT COUNT(*) AS TOTAL_VALUES FROM SALES_SAMPLE_DATA;
 
 ## Checking Unique VALUES
 
-**DISTINCT Years**
+**Unique Years**
 ```sql
 SELECT DISTINCT(YEAR_ID) FROM SALES_SAMPLE_DATA;
 ```
--- OUTPUT --
+**OUTPUT**
 | year_id |
 |---------|
 | 2003    |
 | 2004    |
 | 2005    |
 
-**DISTINCT Product Lines**
+**Unique Product Lines**
 ```sql
 SELECT DISTINCT(PRODUCTLINE) FROM SALES_SAMPLE_DATA;
 ```
--- OUTPUT --
+**OUTPUT**
 | PRODUCTLINE      |
 |------------------|
 | Motorcycles      |
@@ -78,7 +78,7 @@ SELECT DISTINCT(PRODUCTLINE) FROM SALES_SAMPLE_DATA;
 | Ships            |
 | Trains           |
 
-**DISTINCT Sales Status**
+**Unique Sales Status**
 ```sql
 SELECT DISTINCT(status) AS SALES_STATUS FROM SALES_SAMPLE_DATA;
 ```
@@ -92,11 +92,11 @@ SELECT DISTINCT(status) AS SALES_STATUS FROM SALES_SAMPLE_DATA;
 | On Hold    |
 | Resolved   |
 
-**DISTINCT Countries**
+**Unique Countries**
 ```sql
 SELECT DISTINCT(COUNTRY) FROM SALES_SAMPLE_DATA;
 ```
--- OUTPUT --
+**OUTPUT**
 | COUNTRY     |
 |-------------|
 | USA         |
@@ -119,11 +119,11 @@ SELECT DISTINCT(COUNTRY) FROM SALES_SAMPLE_DATA;
 | Switzerland |
 | Ireland     |
 
-**DISTINCT Territories**
+**Unique Territories**
 ```sql
 SELECT DISTINCT(TERRITORY) from SALES_SAMPLE_DATA;
 ```
--- OUTPUT --
+**OUTPUT**
 | TERRITORY |
 |-----------|
 | NA        |
@@ -131,21 +131,23 @@ SELECT DISTINCT(TERRITORY) from SALES_SAMPLE_DATA;
 | APAC      |
 | Japan     |
 
-## Analysis
+## RFM Analysis
 
-**This SQL query calculates the RFM (Recency, Frequency, Monetary) values for each customer in the dataset**
+**This SQL query calculates the RFM (Recency, Frequency, Monetary) values for each customer**
 ```sql
 SELECT
-    CUSTOMERNAME,
-    ROUND(SUM(SALES),0) AS MonetaryValue,
-    COUNT(DISTINCT ORDERNUMBER) AS Frequency,
-    -- MAX(STR_TO_DATE(ORDERDATE,' %d/%m/%y')) AS EACH_CUSTOMERS_LAST_TRANSACTION_DATE,
-    -- (SELECT MAX(STR_TO_DATE(ORDERDATE, '%d/%m/%y')) FROM SALES_SAMPLE_DATA) AS BUSINESS_LAST_TRANSACTION_DATE,
-    DATEDIFF(MAX(STR_TO_DATE(ORDERDATE, '%d/%m/%y')), (SELECT MAX(STR_TO_DATE(ORDERDATE, '%d/%m/%y')) FROM SALES_SAMPLE_DATA))   AS Recency
-FROM SALES_SAMPLE_DATA
+	CUSTOMERNAME,
+	MAX(STR_TO_DATE(ORDERDATE, '%d/%m/%y')) AS CUSTOMER_LAST_TRANSACTION_DATE,
+    DATEDIFF((SELECT MAX(STR_TO_DATE(ORDERDATE, '%d/%m/%y')) FROM SAMPLE_SALES_DATA), 
+    MAX(STR_TO_DATE(ORDERDATE, '%d/%m/%y'))) AS RECENCY_VALUE,
+    COUNT(DISTINCT ORDERNUMBER) AS FREQUENCY_VALUE,
+    SUM(QUANTITYORDERED) AS TOTAL_QTY_ORDERED,
+    ROUND(SUM(SALES),0) AS MONETARY_VALUE
+FROM SAMPLE_SALES_DATA
 GROUP BY CUSTOMERNAME;
+
 ```
--- OUTPUT --
+**OUTPUT**
 | CUSTOMERNAME                | MonetaryValue | Frequency | Recency |
 |-----------------------------|---------------|-----------|---------|
 | Alpha Cognac                | 70488         | 3         | 64     |
