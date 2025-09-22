@@ -4,9 +4,9 @@
 RFM Segmentation is a powerful customer segmentation technique used in businesses, marketing and customer analytics. It helps in categorizing different customer groups based on their purchasing behavior.
 
 **RFM stands for:**
-Recency (R): How recently a customer made purchase. A lower number indicates a more recent purchase.
-Frequency (F): How often a customer make a purchase. A higher number inddicates a customer purchases frequently. 
-Monetary Value (M): How much money a customer spends on purchases. It indicates how much financial value a customer brings to a business.
+- Recency (R): How recently a customer made purchase. A lower number indicates a more recent purchase.
+- Frequency (F): How often a customer make a purchase. A higher number inddicates a customer purchases frequently. 
+- Monetary Value (M): How much money a customer spends on purchases. It indicates how much financial value a customer brings to a business.
 
 ## Why we should use RFM Segmentation?
 
