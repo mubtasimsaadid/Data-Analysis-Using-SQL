@@ -13,48 +13,26 @@ RFM Segmentation is a powerful customer segmentation technique used in businesse
 RFM segmentation helps businesses in personalize marketing efforts, improve customer retention, identify churn risks, and so on based the calculation of Recency, Frequency, and Monetary scores. The provided SQL script calculates these three factors for each customers and segments them into distinct behavioral categories, including 'Champions', 'Loyal Customers', 'Potential Loyalists', 'Promising Customers', 'Needs Attention', 'About to Sleep', and 'Other'.
 
 
-## Database Setup
+## Setting Up the Databse
 
 - Create a database named `RFM_SALES`.
 ```sql
 CREATE DATABASE IF NOT EXISTS RFM_SALES;
+
 USE RFM_SALES;
+
 CREATE TABLE SALES_SAMPLE_DATA (
     ORDERNUMBER INT(8),
-    QUANTITYORDERED DECIMAL(8,2),
-    PRICEEACH DECIMAL(8,2),
-    ORDERLINENUMBER INT(3),
-    SALES DECIMAL(8,2),
-    ORDERDATE VARCHAR(16),
-    STATUS VARCHAR(16),
-    QTR_ID INT(1),
-    MONTH_ID INT(2),
-    YEAR_ID INT(4),
-    PRODUCTLINE VARCHAR(32),
-    MSRP INT(8),
-    PRODUCTCODE VARCHAR(16),
-    CUSTOMERNAME VARCHAR(64),
-    PHONE VARCHAR(32),
-    ADDRESSLINE1 VARCHAR(64),
-    ADDRESSLINE2 VARCHAR(64),
-    CITY VARCHAR(16),
-    STATE VARCHAR(16),
-    POSTALCODE VARCHAR(16),
-    COUNTRY VARCHAR(24),
-    TERRITORY VARCHAR(24),
-    CONTACTLASTNAME VARCHAR(16),
-    CONTACTFIRSTNAME VARCHAR(16),
-    DEALSIZE VARCHAR(10)
 );
 ```
 - Import wizard data
 
-## Dataset Exploration
+## Analyzing the Dataset
 
 ```sql
 SELECT * FROM SALES_SAMPLE_DATA LIMIT 5;
 ```
--- OUTPUT --
+**OUTPUT**
 | ORDERNUMBER | QUANTITYORDERED | PRICEEACH | ORDERLINENUMBER | SALES   | ORDERDATE | STATUS  | QTR_ID | MONTH_ID | YEAR_ID | PRODUCTLINE | MSRP | PRODUCTCODE | CUSTOMERNAME          | PHONE       | ADDRESSLINE1            | ADDRESSLINE2 | CITY          | STATE | POSTALCODE | COUNTRY | TERRITORY | CONTACTLASTNAME | CONTACTFIRSTNAME | DEALSIZE |
 |-------------|------------------|-----------|------------------|---------|-----------|---------|--------|----------|---------|-------------|------|-------------|-----------------------|-------------|-------------------------|--------------|---------------|-------|------------|---------|-----------|-----------------|------------------|----------|
 | 10107       | 30.00            | 95.70     | 2                | 2871.00 | 24/2/03   | Shipped | 1      | 2        | 2003    | Motorcycles | 95   | S10_1678    | Land of Toys Inc.     | 2125557818  | 897 Long Airport Avenue |              | NYC           | NY    | 10022      | USA     | NA        | Yu              | Kwai             | Small    |
@@ -64,10 +42,11 @@ SELECT * FROM SALES_SAMPLE_DATA LIMIT 5;
 | 10159       | 49.00            | 100.00    | 14               | 5205.27 | 10/10/03  | Shipped | 4      | 10       | 2003    | Motorcycles | 95   | S10_1678    | Corporate Gift Ideas Co. | 6505551386  | 7734 Strong St.        |              | San Francisco | CA    |            | USA     | NA        | Brown           | Julie            | Medium   |
 
 ```sql
-SELECT COUNT(*) FROM SALES_SAMPLE_DATA;-- 2823
+SELECT COUNT(*) AS TOTAL_VALUES FROM SALES_SAMPLE_DATA;-- 2823
 ```
--- OUTPUT --
-| COUNT(*) |
+
+**OUTPUT**
+| TOTAL_VALUES |
 |----------|
 | 2823     |
 
