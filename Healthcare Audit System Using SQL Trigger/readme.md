@@ -14,3 +14,9 @@ This project implements an automated audit logging system using SQL triggers to 
 CREATE DATABASE IF NOT EXISTS HEALTHCARE;
 USE HEALTHCARE;
 
+## Creating Tables 
+
+- Create a database named `healthcare`.
+```sql
+CREATE DATABASE IF NOT EXISTS HEALTHCARE;
+USE HEALTHCARE;
