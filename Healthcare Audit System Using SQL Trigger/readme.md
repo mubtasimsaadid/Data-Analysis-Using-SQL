@@ -16,7 +16,7 @@ USE HEALTHCARE;
 ```
 
 ## Core Tables 
-PATIENTS 
+**PATIENTS** 
 ```sql
 CREATE TABLE PATIENTS(
 	PATIENT_ID BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -29,7 +29,7 @@ CREATE TABLE PATIENTS(
     CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     LAST_UPDATED TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
 ```
-MEDICAL_RECORDS 
+**MEDICAL_RECORDS** 
 ```sql
 CREATE TABLE MEDICAL_RECORDS(
 	RECORD_ID BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -40,7 +40,7 @@ CREATE TABLE MEDICAL_RECORDS(
     RECORD_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     LAST_UPDATED TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
 ```
-AUDIT_LOG
+**AUDIT_LOG**
 ```sql
 CREATE TABLE AUDIT_LOG (
 	LOG_ID BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -57,7 +57,7 @@ SET @CURRENT_CHANGED_BY = 1101;           -- MANUALLY SET CHANGED_BY ID
 ```
 
 ## TRIGGER IMPLEMENTATION
-INSERT TRIGGER: Automatically log new patient registrations and medical record creation:
+**INSERT TRIGGER:** Automatically log new patient registrations and medical record creation:
 ```sql
 TRIGGER 
 DELIMITER $$
@@ -76,7 +76,7 @@ END $$
 DELIMITER ;
 ```
 
-UPDATE TRIGGER: When any existing record is updated, triggers captures both old and new values for comparison.
+**UPDATE TRIGGER:** When any existing record is updated, triggers captures both old and new values for comparison.
 ```sql
 TRIGGER 
 DELIMITER $$
@@ -99,7 +99,7 @@ END $$
 DELIMITER ;
 ```
 
-DELETE TRIGGER: Preserve deleted data for auditing and rollbacks
+**DELETE TRIGGER:** Preserve deleted data for auditing and rollbacks
 ```sql
 CREATE TABLE PATIENTS(
 	PATIENT_ID BIGINT AUTO_INCREMENT PRIMARY KEY,
