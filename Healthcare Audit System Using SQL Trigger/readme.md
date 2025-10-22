@@ -6,6 +6,16 @@ A comprehensive SQL trigger-based audit trail system designed for healthcare dat
 
 This project implements an automated audit logging system using SQL triggers to track all data modifications (INSERT, UPDATE, DELETE) in a healthcare database. Every change to patient information and medical records is automatically logged with timestamps, user identification, and complete change history.
 
+## How It Works
+
+Whenever a record in ```sql PATIENTS ``` or MEDICAL_RECORDS is inserted, updated, or deleted:
+
+- The corresponding trigger activates.
+
+- A detailed JSON entry is added to AUDIT_LOG contaning all the changes.
+
+- The change is timestamped and linked to the current session user (@CURRENT_CHANGED_BY).
+
 
 ## Database Setup
 
