@@ -8,11 +8,11 @@ This project implements an automated audit logging system using SQL triggers to 
 
 ## How It Works
 
-Whenever a record in ```sql PATIENTS ``` or MEDICAL_RECORDS is inserted, updated, or deleted:
+Whenever a record in ```PATIENTS``` or ```MEDICAL_RECORDS``` is inserted, updated, or deleted:
 
 - The corresponding trigger activates.
 
-- A detailed JSON entry is added to AUDIT_LOG contaning all the changes.
+- A detailed JSON entry is added to ```AUDIT_LOG``` contaning all the changes.
 
 - The change is timestamped and linked to the current session user (@CURRENT_CHANGED_BY).
 
