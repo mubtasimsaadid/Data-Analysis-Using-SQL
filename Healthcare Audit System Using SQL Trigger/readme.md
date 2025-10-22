@@ -130,3 +130,20 @@ END $$
 DELIMITER ;
 ```
 
+## OUTPUT OF ```AUDIT_LOG``` AFTER INITIATING ALL THE TRIGGERS
+
+
+| LOG_ID | TABLE_NAME      | ACTION_TYPE | ENTITY_ID | CHANGED_DATA                                                                                                                                                                     | CHANGED_BY | ACTION_DATE           |
+|--------|------------------|-------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|------------------------|
+| 1      | PATIENTS         | INSERT      | 32        | {"DOB": "1994-01-31", "EMAIL": "anniemarie@example.com", "ADDRESS": "88 Johnson Rd, Southridge", "FULL_NAME": "Annie Marie"}                                                    | 1101       | 2025-10-22 15:07:39    |
+| 2      | PATIENTS         | INSERT      | 33        | {"DOB": "2000-10-12", "EMAIL": "john.doe@example.com", "ADDRESS": "31 Cross Street, Southlake", "FULL_NAME": "John Doe"}                                                         | 1101       | 2025-10-22 15:08:45    |
+| 4      | PATIENTS         | UPDATE      | 33        | {"NEW": {"DOB": "2000-10-12", "EMAIL": "john.doe.new@example.com", "GENDER": "M", "ADDRESS": "300 XYZ Street, Boulder Creek", "FULL_NAME": "John Doe", "PATIENT_ID": 33}, "OLD: ": {"DOB": "2000-10-12", "EMAIL": "john.doe@example.com", "GENDER": "M", "ADDRESS": "31 Cross Street, Southlake", "FULL_NAME": "John Doe", "PATIENT_ID": 33}} | 1210       | 2025-10-22 17:24:54    |
+| 5      | PATIENTS         | UPDATE      | 30        | {"NEW: ": {"DOB": "1984-09-23", "EMAIL": "gabriel.n@example.com", "GENDER": "F", "ADDRESS": "12 Stone Gate Pl, Boulder Creek", "FULL_NAME": "Gabriela Nelson", "PATIENT_ID": 30}, "OLD: ": {"DOB": "1984-09-23", "EMAIL": "gabriel.n@example.com", "GENDER": "F", "ADDRESS": "12 Stone Gate Pl, Boulder Creek", "FULL_NAME": "Gabriela Nelson", "PATIENT_ID": 30}} | 1210       | 2025-10-22 17:27:16    |
+| 6      | PATIENTS         | DELETE      | 33        | {"DOB": "2000-10-12", "EMAIL": "john.doe.new@example.com", "ADDRESS": "300 XYZ Street, Boulder Creek", "FULL_NAME": "John Doe"}                                                  | 1210       | 2025-10-22 19:13:48    |
+| 7      | MEDICAL_RECORDS  | INSERT      | 43        | {"DIAGNOSIS": "Seasonal Allergies", "TREATMENT": "Loratadine 10mg daily, Avoid allergens", "PATIENT_ID": 32, "PRESCRIBED_BY": "Dr. Emily Carter"}                               | 1101       | 2025-10-22 19:55:47    |
+| 8      | MEDICAL_RECORDS  | UPDATE      | 43        | {"NEW: ": {"DIAGNOSIS": "Seasonal Allergies", "TREATMENT": "Loratadine 10mg daily, Avoid allergens", "PATIENT_ID": 32, "PRESCRIBED_BY": "Dr. Karen Doyle"}, "OLD: ": {"DIAGNOSIS": "Seasonal Allergies", "TREATMENT": "Loratadine 10mg daily, Avoid allergens", "PATIENT_ID": 32, "PRESCRIBED_BY": "Dr. Emily Carter"}} | 1201       | 2025-10-22 20:23:58    |
+| 9      | MEDICAL_RECORDS  | DELETE      | 41        | {"DIAGNOSIS": "Plantar Fasciitis", "TREATMENT": "Stretching, Orthotics, NSAIDs", "PATIENT_ID": 29, "PRESCRIBED_BY": "Dr. Steven Wallace"}                                       | 1201       | 2025-10-22 20:45:03    |
+| 10     | MEDICAL_RECORDS  | INSERT      | 41        | {"DIAGNOSIS": "Plantar Fasciitis", "TREATMENT": "Stretching, Orthotics, NSAIDs", "PATIENT_ID": 29, "PRESCRIBED_BY": "Dr. Steven Wallace"}                                       | 1201       | 2025-10-22 20:46:18    |
+
+
+
